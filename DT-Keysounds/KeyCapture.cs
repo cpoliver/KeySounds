@@ -12,14 +12,17 @@ namespace KeyboardHook
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_KEYUP = 0x0101;
 
+        private readonly IntPtr _hookId = IntPtr.Zero;
         private readonly List<int> _keysDown = new List<int>();
 
-        private readonly LowLevelKeyboardProc _proc;
-        private readonly IntPtr _hookId = IntPtr.Zero;
+        public bool IgnoreHeldKeyDownEvents { get; set; }
+        public Action Callback { get; set; }
 
-        public KeyCapturer()
+        public KeyCapturer(Action userCallback = null, bool ignoreHeldKeyDownEvents = true)
         {
             _hookId = SetHook(HookCallback);
+            Callback = userCallback;
+            IgnoreHeldKeyDownEvents = ignoreHeldKeyDownEvents;
         }
 
         private IntPtr SetHook(LowLevelKeyboardProc proc)
@@ -35,6 +38,8 @@ namespace KeyboardHook
 
         private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
+            if (Callback == null) return IntPtr.Zero;
+
             if (nCode >= 0)
             {
                 var keyCode = Marshal.ReadInt32(lParam);
@@ -44,8 +49,8 @@ namespace KeyboardHook
 
                 if (wParam == (IntPtr)WM_KEYDOWN)
                 {
-                    if (!_keysDown.Contains(keyCode))
-                        Console.WriteLine((Keys)keyCode);
+                    if (!IgnoreHeldKeyDownEvents || !_keysDown.Contains(keyCode))
+                        Callback.Invoke();
 
                     _keysDown.Add(keyCode);
                 }
