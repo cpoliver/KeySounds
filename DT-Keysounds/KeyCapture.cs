@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
-namespace KeyboardHook
+namespace KeySounds.KeyCapture
 {
-    public class KeyCapturer : IDisposable
+    public class KeyCapturer
     {
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
@@ -16,16 +15,16 @@ namespace KeyboardHook
         private readonly List<int> _keysDown = new List<int>();
 
         public bool IgnoreHeldKeyDownEvents { get; set; }
-        public Action Callback { get; set; }
+        public Action<int> Callback { get; set; }
 
-        public KeyCapturer(Action userCallback = null, bool ignoreHeldKeyDownEvents = true)
+        public KeyCapturer(Action<int> userCallback = null, bool ignoreHeldKeyDownEvents = true)
         {
             _hookId = SetHook(HookCallback);
             Callback = userCallback;
             IgnoreHeldKeyDownEvents = ignoreHeldKeyDownEvents;
         }
 
-        private IntPtr SetHook(LowLevelKeyboardProc proc)
+        private static IntPtr SetHook(LowLevelKeyboardProc proc)
         {
             using (var currentProcess = Process.GetCurrentProcess())
             using (var currentModule = currentProcess.MainModule)
@@ -50,7 +49,7 @@ namespace KeyboardHook
                 if (wParam == (IntPtr)WM_KEYDOWN)
                 {
                     if (!IgnoreHeldKeyDownEvents || !_keysDown.Contains(keyCode))
-                        Callback.Invoke();
+                        Callback.Invoke(keyCode);
 
                     _keysDown.Add(keyCode);
                 }
