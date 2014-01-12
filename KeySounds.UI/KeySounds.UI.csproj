@@ -115,7 +115,7 @@
     <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DT-Keysounds\KeySounds.KeyCapture.csproj">
+    <ProjectReference Include="..\KeySounds.KeyCapture\KeySounds.KeyCapture.csproj">
       <Project>{43293ee1-a817-44d9-a3f6-f998050ec2ad}</Project>
       <Name>KeySounds.KeyCapture</Name>
     </ProjectReference>
