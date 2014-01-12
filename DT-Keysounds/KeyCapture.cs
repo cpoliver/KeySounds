@@ -1,30 +1,28 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
-namespace DT_Keysounds
+namespace KeyboardHook
 {
-    public class KeyCapture
+    public class KeyCapturer : IDisposable
     {
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_KEYUP = 0x0101;
 
-        private static readonly List<int> KeysDown = new List<int>();
+        private readonly List<int> _keysDown = new List<int>();
 
-        private static readonly LowLevelKeyboardProc Proc = HookCallback;
-        private static IntPtr _hookId = IntPtr.Zero;
+        private readonly LowLevelKeyboardProc _proc;
+        private readonly IntPtr _hookId = IntPtr.Zero;
 
-        public static void Main()
+        public KeyCapturer()
         {
-            _hookId = SetHook(Proc);
-            Application.Run();
-            UnhookWindowsHookEx(_hookId);
+            _hookId = SetHook(HookCallback);
         }
 
-        private static IntPtr SetHook(LowLevelKeyboardProc proc)
+        private IntPtr SetHook(LowLevelKeyboardProc proc)
         {
             using (var currentProcess = Process.GetCurrentProcess())
             using (var currentModule = currentProcess.MainModule)
@@ -35,29 +33,38 @@ namespace DT_Keysounds
 
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-        private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
+        private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0)
             {
-                var keycode = Marshal.ReadInt32(lParam);
+                var keyCode = Marshal.ReadInt32(lParam);
 
                 if (wParam == (IntPtr)WM_KEYUP)
-                    KeysDown.RemoveAll(k => k == keycode);
+                    _keysDown.RemoveAll(k => k == keyCode);
 
                 if (wParam == (IntPtr)WM_KEYDOWN)
                 {
-                    if (!KeysDown.Contains(keycode))
-                        Console.WriteLine((Keys)keycode);
+                    if (!_keysDown.Contains(keyCode))
+                        Console.WriteLine((Keys)keyCode);
 
-                    KeysDown.Add(keycode);
+                    _keysDown.Add(keyCode);
                 }
-
             }
 
             return CallNextHookEx(_hookId, nCode, wParam, lParam);
         }
 
-        #region Dll Imports
+        public void Dispose()
+        {
+            UnhookWindowsHookEx(_hookId);
+        }
+
+        ~KeyCapturer()
+        {
+            Dispose();
+        }
+
+        #region DLL Imports
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
