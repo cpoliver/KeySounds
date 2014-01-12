@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{43293EE1-A817-44D9-A3F6-F998050EC2AD}</ProjectGuid>
+    <ProjectGuid>{46743498-9042-4B42-BD3C-CDD0E8667551}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KeyboardHook</RootNamespace>
-    <AssemblyName>KeyCapture</AssemblyName>
+    <RootNamespace>KeySounds.KeyboardManagement</RootNamespace>
+    <AssemblyName>KeySounds.KeyboardManagement</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,17 +29,44 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAudio">
+      <HintPath>..\packages\NAudio.1.7\lib\net35\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KeyCapture.cs" />
+    <Compile Include="KeyboardManager.cs" />
+    <Compile Include="KeyCapturer.cs" />
+    <Compile Include="KeySoundPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="KeySounds\0.mp3" />
+    <EmbeddedResource Include="KeySounds\1.mp3" />
+    <EmbeddedResource Include="KeySounds\2.mp3" />
+    <EmbeddedResource Include="KeySounds\3.mp3" />
+    <EmbeddedResource Include="KeySounds\4.mp3" />
+    <EmbeddedResource Include="KeySounds\5.mp3" />
+    <EmbeddedResource Include="KeySounds\6.mp3" />
+    <EmbeddedResource Include="KeySounds\7.mp3" />
+    <EmbeddedResource Include="KeySounds\8.mp3" />
+    <EmbeddedResource Include="KeySounds\Return.mp3" />
+    <EmbeddedResource Include="KeySounds\Space.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

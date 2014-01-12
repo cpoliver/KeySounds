@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace KeySounds.KeyCapture
+namespace KeySounds.KeyboardManagement
 {
     public class KeyCapturer
     {
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
         private const int WM_KEYUP = 0x0101;
+        private const int WM_SYSKEYDOWN = 0x104;
+        private const int WM_SYSKEYUP = 0x105;
 
         private readonly IntPtr _hookId = IntPtr.Zero;
+        private readonly LowLevelKeyboardProc _hookProc; 
         private readonly List<int> _keysDown = new List<int>();
 
         public bool IgnoreHeldKeyDownEvents { get; set; }
@@ -19,7 +22,8 @@ namespace KeySounds.KeyCapture
 
         public KeyCapturer(Action<int> userCallback = null, bool ignoreHeldKeyDownEvents = true)
         {
-            _hookId = SetHook(HookCallback);
+            _hookProc = HookCallback; // keep reference to prevent GC
+            _hookId = SetHook(_hookProc);
             Callback = userCallback;
             IgnoreHeldKeyDownEvents = ignoreHeldKeyDownEvents;
         }

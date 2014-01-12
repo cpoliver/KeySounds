@@ -68,8 +68,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\VolumeSlider.xaml.cs">
+      <DependentUpon>VolumeSlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\TrayIconViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Page Include="Controls\VolumeSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\TrayIcon.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -112,13 +119,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Images\" />
+    <ProjectReference Include="..\KeySounds.KeyboardManagement\KeySounds.KeyboardManagement.csproj">
+      <Project>{46743498-9042-4b42-bd3c-cdd0e8667551}</Project>
+      <Name>KeySounds.KeyboardManagement</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KeySounds.KeyCapture\KeySounds.KeyCapture.csproj">
-      <Project>{43293ee1-a817-44d9-a3f6-f998050ec2ad}</Project>
-      <Name>KeySounds.KeyCapture</Name>
-    </ProjectReference>
+    <Resource Include="Images\TrayIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
