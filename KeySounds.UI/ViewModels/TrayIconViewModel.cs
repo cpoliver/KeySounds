@@ -1,16 +1,20 @@
-using System.Diagnostics;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using KeySounds.KeyboardManagement;
-using KeySounds.KeyboardManager;
 
 namespace KeySounds.UI.ViewModels
 {
     public class TrayIconViewModel : ViewModelBase
     {
+        #region Backing Fields
+
         private readonly KeyCapturer _keyCapturer;
         private bool _isMuted;
+        private float _volume;
+
+        #endregion
+        #region Properties
 
         public bool IsMuted
         {
@@ -18,11 +22,23 @@ namespace KeySounds.UI.ViewModels
             set { _isMuted = value; RaisePropertyChanged(() => IsMuted); }
         }
 
+        public float Volume
+        {
+            get { return _volume; }
+            set { _volume = value; RaisePropertyChanged(() => Volume); }
+        }
+
+        #endregion
+        #region Constructor
+
         public TrayIconViewModel()
         {
             IsMuted = false;
-            _keyCapturer = new KeyCapturer(KeySoundPlayer.PlaySound);
+            _keyCapturer = new KeyCapturer(KeySoundPlayer.PlaySoundOld);
         }
+
+        #endregion
+        #region Commands
 
         public RelayCommand ToggleMuteCommand
         {
@@ -39,5 +55,7 @@ namespace KeySounds.UI.ViewModels
                 return new RelayCommand(() => Application.Current.Shutdown());
             }
         }
+
+        #endregion
     }
 }

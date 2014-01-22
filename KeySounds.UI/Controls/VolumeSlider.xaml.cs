@@ -15,14 +15,29 @@ using System.Windows.Shapes;
 
 namespace KeySounds.UI.Controls
 {
-    /// <summary>
-    /// Interaction logic for VolumeSlider.xaml
-    /// </summary>
     public partial class VolumeSlider : UserControl
     {
+        public static DependencyProperty IsMutedProperty = DependencyProperty.Register("IsMuted", typeof (bool),
+            typeof (VolumeSlider), new FrameworkPropertyMetadata(false));
+        public static DependencyProperty VolumeProperty = DependencyProperty.Register("Volume", typeof(float),
+            typeof(VolumeSlider), new FrameworkPropertyMetadata(0F));
+        
+        
         public VolumeSlider()
         {
             InitializeComponent();
+        }
+
+        public bool IsMuted
+        {
+            get { return (bool) GetValue(IsMutedProperty); }
+            set { SetValue(IsMutedProperty, value); }
+        }
+
+        public float Volume
+        {
+            get { return (float)GetValue(VolumeProperty); }
+            set { SetValue(VolumeProperty, value); }
         }
     }
 }

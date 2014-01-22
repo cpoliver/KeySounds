@@ -33,6 +33,7 @@
     <Reference Include="NAudio">
       <HintPath>..\packages\NAudio.1.7\lib\net35\NAudio.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
+    <Compile Include="Keyboard.cs" />
     <Compile Include="KeyboardManager.cs" />
     <Compile Include="KeyCapturer.cs" />
     <Compile Include="KeySoundPlayer.cs" />
@@ -53,6 +56,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Keyboards\model m\keyboard.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

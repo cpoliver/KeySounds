@@ -4,6 +4,7 @@
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cmd="http://www.galasoft.ch/mvvmlight"
+        xmlns:uc="clr-namespace:KeySounds.UI.Controls"
         DataContext="{Binding TrayIcon,
                               Source={StaticResource Locator}}"
         Title="TrayIcon" Height="0"
@@ -21,10 +22,7 @@
                         Width="160"
                         Height="40">
                     <StackPanel>
-                        <!--<Button Content="Mute"
-                                Command="{Binding MuteCommand}"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center" />-->
+                        <uc:VolumeSlider IsMuted="{Binding IsMuted}" Volume="{Binding Volume}"></uc:VolumeSlider>
                         <Button Content="Exit"
                                 Command="{Binding ExitCommand}"
                                 HorizontalAlignment="Center"
