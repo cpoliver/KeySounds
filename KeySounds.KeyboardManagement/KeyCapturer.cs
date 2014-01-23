@@ -18,13 +18,17 @@ namespace KeySounds.KeyboardManagement
         private readonly List<int> _keysDown = new List<int>();
 
         public bool IgnoreHeldKeyDownEvents { get; set; }
-        public Action<int> Callback { get; set; }
+        public Action<int> KeyDownCallback { get; set; }
+        public Action<int> KeyUpCallback { get; set; }
 
-        public KeyCapturer(Action<int> userCallback = null, bool ignoreHeldKeyDownEvents = true)
+        public KeyCapturer(Action<int> keyDownCallback,
+                           Action<int> keyUpCallback,
+                           bool ignoreHeldKeyDownEvents = true)
         {
             _hookProc = HookCallback; // keep reference to prevent GC
             _hookId = SetHook(_hookProc);
-            Callback = userCallback;
+            KeyDownCallback = keyDownCallback;
+            KeyUpCallback = keyUpCallback;
             IgnoreHeldKeyDownEvents = ignoreHeldKeyDownEvents;
         }
 
@@ -41,19 +45,20 @@ namespace KeySounds.KeyboardManagement
 
         private IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            if (Callback == null) return IntPtr.Zero;
-
             if (nCode >= 0)
             {
                 var keyCode = Marshal.ReadInt32(lParam);
 
-                if (wParam == (IntPtr)WM_KEYUP)
+                if (wParam == (IntPtr) WM_KEYUP)
+                {
                     _keysDown.RemoveAll(k => k == keyCode);
+                    KeyUpCallback.Invoke(keyCode);
+                }
 
                 if (wParam == (IntPtr)WM_KEYDOWN)
                 {
                     if (!IgnoreHeldKeyDownEvents || !_keysDown.Contains(keyCode))
-                        Callback.Invoke(keyCode);
+                        KeyDownCallback.Invoke(keyCode);
 
                     _keysDown.Add(keyCode);
                 }

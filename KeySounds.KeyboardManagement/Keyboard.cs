@@ -5,21 +5,23 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using NAudio.Wave;
 using Newtonsoft.Json;
 
 namespace KeySounds.KeyboardManagement
 {
     public class Keyboard
     {
+        public enum KeyStrokeDirection { Down, Up };
 
-        #region Properties of the Keyboard
+        #region Serialized Properties
+
         public string Manufacturer { get; private set; }
         public string Model { get; private set; }
         public int NumberOfKeys { get; private set; }
         public string KeyType { get; private set; }
         public string Connector { get; private set; }
         public string YearsInProduction { get; private set; }
+
         #endregion
 
         [NonSerialized]
@@ -28,12 +30,10 @@ namespace KeySounds.KeyboardManagement
             get { return _rootDirectory; }
             private set { _rootDirectory = value; }
         }
+
         public string MainImagePath { get { return Path.Combine(RootDirectory, Constants.MainImageFileName); } }
         public string ExtraImagePath { get { return Path.Combine(RootDirectory, Constants.ExtraImageFileName); } }
 
-        /// <summary>
-        /// Create a new keyboard instance from a given JSON file
-        /// </summary>
         public static Keyboard Load(string jsonPath)
         {
             var js = new JsonSerializer();
@@ -42,7 +42,7 @@ namespace KeySounds.KeyboardManagement
             using (var jr = new JsonTextReader(sr))
             {
                 var kb = js.Deserialize<Keyboard>(jr);
-                kb.RootDirectory = Path.GetDirectoryName(jsonPath);
+                    kb.RootDirectory = Path.GetDirectoryName(jsonPath);
                 return kb;
             }
         }
@@ -56,6 +56,11 @@ namespace KeySounds.KeyboardManagement
             {
                 js.Serialize(jw, this);
             }
+        }
+
+        public string GetPathForKeySound(int vkCode, KeyStrokeDirection direction)
+        {
+            return Path.Combine(RootDirectory, String.Format(Constants.KeySoundFormatString, vkCode, direction.ToString().ToUpper()));
         }
     }
 }

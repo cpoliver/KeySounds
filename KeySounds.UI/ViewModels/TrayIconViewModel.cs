@@ -9,7 +9,7 @@ namespace KeySounds.UI.ViewModels
     {
         #region Backing Fields
 
-        private readonly KeyCapturer _keyCapturer;
+        private readonly KeyboardManager _keyboardManager;
         private bool _isMuted;
         private float _volume;
 
@@ -19,7 +19,11 @@ namespace KeySounds.UI.ViewModels
         public bool IsMuted
         {
             get { return _isMuted; }
-            set { _isMuted = value; RaisePropertyChanged(() => IsMuted); }
+            set
+            {
+                _isMuted = value;
+                RaisePropertyChanged(() => IsMuted);
+            }
         }
 
         public float Volume
@@ -33,8 +37,9 @@ namespace KeySounds.UI.ViewModels
 
         public TrayIconViewModel()
         {
+            _keyboardManager = new KeyboardManager();
             IsMuted = false;
-            _keyCapturer = new KeyCapturer(KeySoundPlayer.PlaySoundOld);
+            Volume = 0.8F;
         }
 
         #endregion

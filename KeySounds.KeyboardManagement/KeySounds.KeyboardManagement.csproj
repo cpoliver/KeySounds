@@ -49,28 +49,10 @@
     <Compile Include="KeyCapturer.cs" />
     <Compile Include="KeySoundPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Keyboards\model m\keyboard.json" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="KeySounds\0.mp3" />
-    <EmbeddedResource Include="KeySounds\1.mp3" />
-    <EmbeddedResource Include="KeySounds\2.mp3" />
-    <EmbeddedResource Include="KeySounds\3.mp3" />
-    <EmbeddedResource Include="KeySounds\4.mp3" />
-    <EmbeddedResource Include="KeySounds\5.mp3" />
-    <EmbeddedResource Include="KeySounds\6.mp3" />
-    <EmbeddedResource Include="KeySounds\7.mp3" />
-    <EmbeddedResource Include="KeySounds\8.mp3" />
-    <EmbeddedResource Include="KeySounds\Return.mp3" />
-    <EmbeddedResource Include="KeySounds\Space.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
