@@ -4,8 +4,5 @@
 	"keys": 105,
 	"type": "Buckling Spring",
 	"connector": "PS/2",
-	"produced": {
-		"start_year": 1987,
-		"end_year": 1999
-	}
+	"years_in_production": "1987 - 1999"
 }

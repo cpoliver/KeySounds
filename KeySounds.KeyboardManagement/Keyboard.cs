@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace KeySounds.KeyboardManagement
@@ -23,16 +18,16 @@ namespace KeySounds.KeyboardManagement
         public string YearsInProduction { get; private set; }
 
         #endregion
+        #region Non-Serialized Properties
 
-        [NonSerialized]
-        private string _rootDirectory;
-        public string RootDirectory {
-            get { return _rootDirectory; }
-            private set { _rootDirectory = value; }
-        }
-
+        [JsonIgnore]
+        public string RootDirectory { get; set; }
+        [JsonIgnore]
         public string MainImagePath { get { return Path.Combine(RootDirectory, Constants.MainImageFileName); } }
+        [JsonIgnore]
         public string ExtraImagePath { get { return Path.Combine(RootDirectory, Constants.ExtraImageFileName); } }
+
+        #endregion
 
         public static Keyboard Load(string jsonPath)
         {
@@ -49,9 +44,9 @@ namespace KeySounds.KeyboardManagement
 
         public void Save()
         {
-            var js = new JsonSerializer();
+            var js = new JsonSerializer { Formatting = Formatting.Indented };
 
-            using (var sw = new StreamWriter(Path.Combine(RootDirectory, Constants.JsonFileName), append:false))
+            using (var sw = new StreamWriter(Path.Combine(RootDirectory, Constants.JsonFileName), false))
             using (var jw = new JsonTextWriter(sw))
             {
                 js.Serialize(jw, this);
@@ -61,6 +56,20 @@ namespace KeySounds.KeyboardManagement
         public string GetPathForKeySound(int vkCode, KeyStrokeDirection direction)
         {
             return Path.Combine(RootDirectory, String.Format(Constants.KeySoundFormatString, vkCode, direction.ToString().ToUpper()));
+        }
+
+        public static void TestSerializeKeyboard()
+        {
+            (new Keyboard
+            {
+                RootDirectory = @"C:\Users\Charles\Desktop",
+                Connector = "PS/2",
+                KeyType = "Buckling Spring",
+                Manufacturer = "IBM",
+                Model = "Model M (1391506)",
+                NumberOfKeys = 105,
+                YearsInProduction = "1987 - 1999"
+            }).Save();
         }
     }
 }

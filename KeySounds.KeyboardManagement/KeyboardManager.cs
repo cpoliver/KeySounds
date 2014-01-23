@@ -27,7 +27,7 @@ namespace KeySounds.KeyboardManagement
         {
             _keyCapturer = new KeyCapturer(KeyDownCallback, KeyUpCallback);
             _keySoundPlayer = new KeySoundPlayer();
-
+            Keyboard.TestSerializeKeyboard();
             LoadKeyboards();
         }
 
