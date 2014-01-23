@@ -1,0 +1,11 @@
+﻿{
+	"manufacturer": "IBM",
+	"model": "Model M (1391506)",
+	"keys": 105,
+	"type": "Buckling Spring",
+	"connector": "PS/2",
+	"produced": {
+		"start_year": 1987,
+		"end_year": 1999
+	}
+}
