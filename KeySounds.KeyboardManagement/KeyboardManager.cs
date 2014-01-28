@@ -16,7 +16,7 @@ namespace KeySounds.KeyboardManagement
         #endregion
         #region Public Properties
 
-        public List<Keyboard> Keyboards { get; private set; }  
+        public List<Keyboard> Keyboards { get; private set; }
         public Keyboard SelectedKeyboard { get; set; }
         public Keyboard ReserveKeyboard { get; set; }
 
@@ -25,9 +25,9 @@ namespace KeySounds.KeyboardManagement
 
         public KeyboardManager()
         {
-            _keyCapturer = new KeyCapturer(KeyDownCallback, KeyUpCallback);
+            _keyCapturer = new KeyCapturer(KeyEventCallback);
             _keySoundPlayer = new KeySoundPlayer();
-            Keyboard.TestSerializeKeyboard();
+            //Keyboard.TestSerializeKeyboard();
             LoadKeyboards();
         }
 
@@ -41,17 +41,10 @@ namespace KeySounds.KeyboardManagement
             ReserveKeyboard = temp;
         }
 
-        public void KeyDownCallback(int vkCode)
+        public void KeyEventCallback(int vkCode, Keyboard.KeyStrokeDirection direction)
         {
-            Debug.WriteLine("keydown: {0}", vkCode); return;
-            var soundPath = SelectedKeyboard.GetPathForKeySound(vkCode, Keyboard.KeyStrokeDirection.Down);
-            _keySoundPlayer.PlaySound(soundPath);
-        }
-
-        public void KeyUpCallback(int vkCode)
-        {
-            Debug.WriteLine("keyup:   {0}", vkCode); return;
-            var soundPath = SelectedKeyboard.GetPathForKeySound(vkCode, Keyboard.KeyStrokeDirection.Up);
+            Debug.WriteLine("keyevent: {0} {1}", direction, vkCode); return;
+            var soundPath = SelectedKeyboard.GetPathForKeySound(vkCode, direction);
             _keySoundPlayer.PlaySound(soundPath);
         }
 

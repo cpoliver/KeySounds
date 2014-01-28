@@ -14,21 +14,18 @@ namespace KeySounds.KeyboardManagement
         private const int WM_SYSKEYUP = 0x105;
 
         private readonly IntPtr _hookId = IntPtr.Zero;
-        private readonly LowLevelKeyboardProc _hookProc; 
+        private readonly LowLevelKeyboardProc _hookProc;
         private readonly List<int> _keysDown = new List<int>();
 
         public bool IgnoreHeldKeyDownEvents { get; set; }
-        public Action<int> KeyDownCallback { get; set; }
-        public Action<int> KeyUpCallback { get; set; }
+        public Action<int, Keyboard.KeyStrokeDirection> KeyEventCallback { get; set; }
 
-        public KeyCapturer(Action<int> keyDownCallback,
-                           Action<int> keyUpCallback,
+        public KeyCapturer(Action<int, Keyboard.KeyStrokeDirection> keyEventCallback,
                            bool ignoreHeldKeyDownEvents = true)
         {
             _hookProc = HookCallback; // keep reference to prevent GC
             _hookId = SetHook(_hookProc);
-            KeyDownCallback = keyDownCallback;
-            KeyUpCallback = keyUpCallback;
+            KeyEventCallback = keyEventCallback;
             IgnoreHeldKeyDownEvents = ignoreHeldKeyDownEvents;
         }
 
@@ -49,16 +46,16 @@ namespace KeySounds.KeyboardManagement
             {
                 var keyCode = Marshal.ReadInt32(lParam);
 
-                if (wParam == (IntPtr) WM_KEYUP)
+                if (wParam == (IntPtr)WM_KEYUP)
                 {
                     _keysDown.RemoveAll(k => k == keyCode);
-                    KeyUpCallback.Invoke(keyCode);
+                    KeyEventCallback.Invoke(keyCode, Keyboard.KeyStrokeDirection.Up);
                 }
 
                 if (wParam == (IntPtr)WM_KEYDOWN)
                 {
                     if (!IgnoreHeldKeyDownEvents || !_keysDown.Contains(keyCode))
-                        KeyDownCallback.Invoke(keyCode);
+                        KeyEventCallback.Invoke(keyCode, Keyboard.KeyStrokeDirection.Down);
 
                     _keysDown.Add(keyCode);
                 }

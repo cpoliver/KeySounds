@@ -48,10 +48,15 @@
     <Compile Include="KeyboardManager.cs" />
     <Compile Include="KeyCapturer.cs" />
     <Compile Include="KeySoundPlayer.cs" />
+    <Compile Include="Messages\SetKeyboardMessage.cs" />
+    <Compile Include="Messages\SetMuteMessage.cs" />
+    <Compile Include="Messages\SetVolumeMessage.cs" />
+    <Compile Include="Messages\ToggleKeyboardsMessage.cs" />
+    <Compile Include="Messages\ToggleMuteMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Keyboards\model m\keyboard.json" />
+    <None Include="Modules\model m\keyboard.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
