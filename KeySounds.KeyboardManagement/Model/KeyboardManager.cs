@@ -16,7 +16,7 @@ namespace KeySounds.KeyboardManagement.Model
         #endregion
         #region Public Properties
 
-        public List<Keyboard> Keyboards { get; private set; }  
+        public List<Keyboard> Keyboards { get; private set; }
         public Keyboard SelectedKeyboard { get; set; }
         public Keyboard ReserveKeyboard { get; set; }
 
@@ -48,7 +48,6 @@ namespace KeySounds.KeyboardManagement.Model
         {
             // only single sample for return and space keys for the time being
             if ((vkCode == 13 || vkCode == 32) && direction == Keyboard.KeyStrokeDirection.Up) return;
-
             var soundPath = SelectedKeyboard.GetPathForKeySound(vkCode, direction);
             _keySoundPlayer.PlaySound(soundPath);
         }

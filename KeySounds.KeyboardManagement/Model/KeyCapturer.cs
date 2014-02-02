@@ -14,7 +14,7 @@ namespace KeySounds.KeyboardManagement.Model
         private const int WM_SYSKEYUP = 0x105;
 
         private readonly IntPtr _hookId = IntPtr.Zero;
-        private readonly LowLevelKeyboardProc _hookProc; 
+        private readonly LowLevelKeyboardProc _hookProc;
         private readonly List<int> _keysDown = new List<int>();
 
         public bool IgnoreHeldKeyDownEvents { get; set; }
@@ -46,7 +46,7 @@ namespace KeySounds.KeyboardManagement.Model
             {
                 var keyCode = Marshal.ReadInt32(lParam);
 
-                if (wParam == (IntPtr) WM_KEYUP)
+                if (wParam == (IntPtr)WM_KEYUP)
                 {
                     _keysDown.RemoveAll(k => k == keyCode);
                     KeyEventCallback.Invoke(keyCode, Keyboard.KeyStrokeDirection.Up);

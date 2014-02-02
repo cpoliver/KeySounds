@@ -49,6 +49,11 @@
     <Compile Include="Model\Keyboard.cs" />
     <Compile Include="Model\KeyboardManager.cs" />
     <Compile Include="Model\KeyCapturer.cs" />
+    <Compile Include="Messages\SetKeyboardMessage.cs" />
+    <Compile Include="Messages\SetMuteMessage.cs" />
+    <Compile Include="Messages\SetVolumeMessage.cs" />
+    <Compile Include="Messages\ToggleKeyboardsMessage.cs" />
+    <Compile Include="Messages\ToggleMuteMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
