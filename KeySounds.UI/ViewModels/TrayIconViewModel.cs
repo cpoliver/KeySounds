@@ -1,7 +1,7 @@
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using KeySounds.KeyboardManagement;
+using KeySounds.KeyboardManagement.Model;
 
 namespace KeySounds.UI.ViewModels
 {

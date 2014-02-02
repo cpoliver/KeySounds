@@ -41,18 +41,34 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="Keyboard.cs" />
-    <Compile Include="KeyboardManager.cs" />
-    <Compile Include="KeyCapturer.cs" />
-    <Compile Include="KeySoundPlayer.cs" />
+    <Compile Include="Model\KeySoundPlayer.cs" />
+    <Compile Include="Model\Keyboard.cs" />
+    <Compile Include="Model\KeyboardManager.cs" />
+    <Compile Include="Model\KeyCapturer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Keyboards\model m\keyboard.json" />
+    <None Include="Modules\IBM SSK\keyboard.json" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Modules\IBM SSK\1d.wav" />
+    <Content Include="Modules\IBM SSK\1u.wav" />
+    <Content Include="Modules\IBM SSK\2d.wav" />
+    <Content Include="Modules\IBM SSK\2u.wav" />
+    <Content Include="Modules\IBM SSK\3d.wav" />
+    <Content Include="Modules\IBM SSK\3u.wav" />
+    <Content Include="Modules\IBM SSK\4d.wav" />
+    <Content Include="Modules\IBM SSK\4u.wav" />
+    <Content Include="Modules\IBM SSK\5d.wav" />
+    <Content Include="Modules\IBM SSK\5u.wav" />
+    <Content Include="Modules\IBM SSK\return.wav" />
+    <Content Include="Modules\IBM SSK\space.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

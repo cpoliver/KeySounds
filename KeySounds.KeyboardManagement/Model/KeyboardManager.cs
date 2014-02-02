@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KeySounds.KeyboardManagement
+namespace KeySounds.KeyboardManagement.Model
 {
     public class KeyboardManager
     {
@@ -25,10 +25,13 @@ namespace KeySounds.KeyboardManagement
 
         public KeyboardManager()
         {
-            _keyCapturer = new KeyCapturer(KeyDownCallback, KeyUpCallback);
+            _keyCapturer = new KeyCapturer(KeyEventCallback);
             _keySoundPlayer = new KeySoundPlayer();
-            Keyboard.TestSerializeKeyboard();
+            Keyboards = new List<Keyboard>();
+
+            //Keyboard.TestSerializeKeyboard();
             LoadKeyboards();
+            SelectedKeyboard = Keyboards.First();
         }
 
         #endregion
@@ -41,17 +44,12 @@ namespace KeySounds.KeyboardManagement
             ReserveKeyboard = temp;
         }
 
-        public void KeyDownCallback(int vkCode)
+        public void KeyEventCallback(int vkCode, Keyboard.KeyStrokeDirection direction)
         {
-            Debug.WriteLine("keydown: {0}", vkCode); return;
-            var soundPath = SelectedKeyboard.GetPathForKeySound(vkCode, Keyboard.KeyStrokeDirection.Down);
-            _keySoundPlayer.PlaySound(soundPath);
-        }
+            // only single sample for return and space keys for the time being
+            if ((vkCode == 13 || vkCode == 32) && direction == Keyboard.KeyStrokeDirection.Up) return;
 
-        public void KeyUpCallback(int vkCode)
-        {
-            Debug.WriteLine("keyup:   {0}", vkCode); return;
-            var soundPath = SelectedKeyboard.GetPathForKeySound(vkCode, Keyboard.KeyStrokeDirection.Up);
+            var soundPath = SelectedKeyboard.GetPathForKeySound(vkCode, direction);
             _keySoundPlayer.PlaySound(soundPath);
         }
 
@@ -60,11 +58,17 @@ namespace KeySounds.KeyboardManagement
 
         private void LoadKeyboards()
         {
-            Task.Factory.StartNew(() => Directory.EnumerateFiles(Constants.ApplicationRoot,
-                                                                 Constants.JsonFileName,
-                                                                 SearchOption.AllDirectories)
-                                                 .ToList()
-                                                 .ForEach(kb => Keyboards.Add(Keyboard.Load(kb))));
+            var keyboards = Directory.EnumerateFiles(Constants.ApplicationRoot,
+                                                     Constants.JsonFileName,
+                                                     SearchOption.AllDirectories)
+                                     .ToList();
+
+            foreach (var kb in keyboards)
+            {
+                Keyboards.Add(Keyboard.Load(kb));
+            }
+
+            //         .ForEach(kb => Keyboards.Add(Keyboard.Load(kb)));
         }
 
         #endregion
